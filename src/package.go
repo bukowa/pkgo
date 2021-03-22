@@ -5,6 +5,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Registry is a map of Package.Type to Fetcher implementing that Type.
 var Registry = map[string]Fetcher{}
 
 var ErrorTypeNotSet = errors.New("type not set on package")
@@ -15,11 +16,12 @@ type Fetcher interface {
 }
 
 type Package struct {
-	Type     string `json:"type" yaml:"type"`
-	Name     string `json:"name" yaml:"name"`
-	Source   string `json:"source" yaml:"source"`
-	Version  string `json:"version" yaml:"version"`
-	Location string `json:"location" yaml:"location"`
+	Type        string `json:"type" yaml:"type"`
+	Name        string `json:"name" yaml:"name"`
+	Source      string `json:"source" yaml:"source"`
+	Version     string `json:"version" yaml:"version"`
+	Destination string `json:"destination" yaml:"destination"`
+	Labels map[string]interface{}	`json:"labels" yaml:"labels"`
 }
 
 func (p Package) WithFields() *log.Entry {
@@ -28,7 +30,8 @@ func (p Package) WithFields() *log.Entry {
 		"name": p.Name,
 		"source": p.Source,
 		"version": p.Version,
-		"location": p.Location,
+		"destination": p.Destination,
+		"labels": p.Labels,
 	})
 }
 
@@ -40,11 +43,12 @@ type pkg struct {
 func copyPkg(p pkg) pkg {
 	return pkg{
 		Package: Package{
-			Type:     p.Type,
-			Name:     p.Name,
-			Source:   p.Source,
-			Version:  p.Version,
-			Location: p.Location,
+			Type:        p.Type,
+			Name:        p.Name,
+			Source:      p.Source,
+			Version:     p.Version,
+			Destination: p.Destination,
+			Labels: p.Labels,
 		},
 		Fetcher: p.Fetcher,
 	}

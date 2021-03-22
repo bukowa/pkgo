@@ -1,25 +1,25 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
+	v1git "github.com/bukowa/pkgo/fetcher/git/v1"
+	"github.com/bukowa/pkgo/fetcher/wporg/v1"
 	"github.com/bukowa/pkgo/src"
-	"github.com/bukowa/pkgo/fetcher/git"
 	"log"
 	"os"
 )
 
 func main() {
-	src.Registry["git"] = git.Fetcher{}
-	b := bytes.NewBuffer([]byte(`
-packages:
-  - name: test
-    type: git
-    source: https://github.com/bukowa/pkgo.git
-    location: ./test
-`))
+	f, err := os.Open("example.yaml")
+	if err != nil {
+		panic(err)
+	}
 
-	c, err := src.NewConfig(b)
+	src.Registry["git.v1"] = v1git.Fetcher{}
+	src.Registry["wp_theme.v1"] = v1wporg.Fetcher{Kind: v1wporg.KindTheme}
+	src.Registry["wp_plugin.v1"] = v1wporg.Fetcher{Kind: v1wporg.KindPlugin}
+
+	c, err := src.NewConfig(f)
 	if err != nil {
 		fmt.Print(err)
 		os.Exit(1)

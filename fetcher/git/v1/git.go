@@ -1,10 +1,10 @@
-package git
+package v1git
 
 import (
-	"github.com/bukowa/pkgo/fetcher"
 	"github.com/bukowa/pkgo/src"
 	log "github.com/sirupsen/logrus"
 	"os"
+	"os/exec"
 	"path/filepath"
 )
 
@@ -13,7 +13,7 @@ type Fetcher struct {
 }
 
 func (f Fetcher) Fetch(p src.Package) (string, error) {
-	loc, err := filepath.Abs(p.Location)
+	loc, err := filepath.Abs(p.Destination)
 	if err != nil {
 		return "", err
 	}
@@ -24,7 +24,7 @@ func (f Fetcher) Fetch(p src.Package) (string, error) {
 		return "", nil
 	}
 
-	cmd := fetcher.NewCommandWithArgs("git", loc, "-C", loc)
+	cmd := newCommandWithArgs("git", loc, "-C", loc)
 	args := [][]string{
 		{"clone", p.Source, "."},
 		{"fetch", "--recurse-submodules", "--depth=1", "origin", p.Version},
@@ -46,4 +46,15 @@ func gits(args[][]string, f func(a ...string) (string, []byte, error)) error {
 		}
 	}
 	return nil
+}
+
+func newCommandWithArgs(name, workDir string, args ...string) func(a ...string) (string, []byte, error) {
+	return func(a ...string) (string, []byte, error) {
+		a = append(args, a...)
+		cmd := exec.Command(name, a...)
+		cmd.Dir = workDir
+		cmd.Env = append(cmd.Env, "GIT_TERMINAL_PROMPT=0")
+		b, err := cmd.CombinedOutput()
+		return cmd.String(), b, err
+	}
 }

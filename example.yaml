@@ -1,0 +1,12 @@
+
+packages:
+
+  - name: x
+    source: git@github.com:bukowa/pkgo.git
+    destination: ./pkgo
+    type: git.v1
+
+  - name: y
+    source: woocommerce
+    destination: var/www/html/wp-content/themeswoocommerce.zip
+    type: wp_plugin.v1
