@@ -22,7 +22,7 @@ func TestNewConfig(t *testing.T) {
 		t.Error(err)
 	}
 	p1, p2 := c.Packages[0], c.Packages[1]
-	if p1.Type != "custom" || p2.Type != "custom2"{
+	if p1.Type != "custom" || p2.Type != "custom2" {
 		t.Error()
 	}
 	if p1.Version != "1" || p2.Version != "2" {

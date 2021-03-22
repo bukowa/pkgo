@@ -12,28 +12,28 @@ type Fetcher interface {
 }
 
 type Package struct {
-	Type    string `json:"type" yaml:"type"`
-	Name    string `json:"name" yaml:"name"`
-	Source  string `json:"source" yaml:"source"`
-	Version string `json:"version" yaml:"version"`
-	Location string	`json:"location" yaml:"location"'`
+	Type     string `json:"type" yaml:"type"`
+	Name     string `json:"name" yaml:"name"`
+	Source   string `json:"source" yaml:"source"`
+	Version  string `json:"version" yaml:"version"`
+	Location string `json:"location" yaml:"location"`
 }
 
 type pkg struct {
-	Package	`json:",inline" yaml:",inline"`
-	Fetcher	`json:"-" yaml:"-"`
+	Package `json:",inline" yaml:",inline"`
+	Fetcher `json:"-" yaml:"-"`
 }
 
 func copyPkg(p pkg) pkg {
 	return pkg{
 		Package: Package{
-			Type:    p.Type,
-			Name:    p.Name,
-			Source:  p.Source,
-			Version: p.Version,
+			Type:     p.Type,
+			Name:     p.Name,
+			Source:   p.Source,
+			Version:  p.Version,
 			Location: p.Location,
 		},
-		Fetcher:  p.Fetcher,
+		Fetcher: p.Fetcher,
 	}
 }
 

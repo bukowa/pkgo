@@ -9,7 +9,6 @@ type customFetcher struct {
 }
 
 type customFetcher2 struct {
-
 }
 
 func (c customFetcher2) Fetch(p Package) (string, error) {
@@ -43,5 +42,3 @@ func TestPackage_UnmarshalYAML(t *testing.T) {
 		t.Error(s)
 	}
 }
-
-
