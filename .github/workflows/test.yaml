@@ -12,3 +12,4 @@ jobs:
       - name: go test
         run: |
           GO111MODULE=on go test -v ./...
+          GO111MODULE=on go run .
