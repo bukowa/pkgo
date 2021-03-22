@@ -1,6 +1,9 @@
 package src
 
-import "errors"
+import (
+	"errors"
+	log "github.com/sirupsen/logrus"
+)
 
 var Registry = map[string]Fetcher{}
 
@@ -17,6 +20,16 @@ type Package struct {
 	Source   string `json:"source" yaml:"source"`
 	Version  string `json:"version" yaml:"version"`
 	Location string `json:"location" yaml:"location"`
+}
+
+func (p Package) WithFields() *log.Entry {
+	return log.WithFields(log.Fields{
+		"type": p.Type,
+		"name": p.Name,
+		"source": p.Source,
+		"version": p.Version,
+		"location": p.Location,
+	})
 }
 
 type pkg struct {
