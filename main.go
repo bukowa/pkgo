@@ -16,6 +16,7 @@ packages:
   - name: test
     type: git
     source: https://github.com/bukowa/pkgo.git
+    location: ./test
 `))
 
 	c, err := src.NewConfig(b)
