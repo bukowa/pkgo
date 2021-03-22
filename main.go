@@ -4,7 +4,8 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/bukowa/pkgo/src"
-	"github.com/bukowa/pkgo/types/git"
+	"github.com/bukowa/pkgo/fetcher/git"
+	"log"
 	"os"
 )
 
@@ -13,22 +14,21 @@ func main() {
 	b := bytes.NewBuffer([]byte(`
 packages:
   - name: test
-    type: git`))
+    type: git
+    source: https://github.com/bukowa/pkgo.git
+`))
 
 	c, err := src.NewConfig(b)
 	if err != nil {
 		fmt.Print(err)
 		os.Exit(1)
 	}
-	if x := c.Packages[0]; x.Type == "git" {
-		s, err := x.Fetch(x.Package)
+
+	for _, pkg := range c.Packages {
+		dir, err := pkg.Fetch(pkg.Package)
 		if err != nil {
-			fmt.Print(err)
-			os.Exit(1)
+			log.Fatal(err)
 		}
-		if s == "git" {
-			os.Exit(0)
-		}
+		log.Print(dir)
 	}
-	panic("")
 }
