@@ -15,6 +15,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Test
-        run:
-          - GO111MODULE=on go test ./...
-          - GO111MODULE=on go run .
+        run: GO111MODULE=on go test ./...
