@@ -22,7 +22,7 @@ func (c customFetcher) Fetch(p Package) (string, error) {
 func TestPackage_UnmarshalYAML(t *testing.T) {
 	Registry["custom"] = customFetcher{}
 	Registry["custom2"] = customFetcher2{}
-	var p pkg
+	var p Pkg
 	b := []byte("name: test\ntype: custom")
 	err := yaml.Unmarshal(b, &p)
 	if err != nil {

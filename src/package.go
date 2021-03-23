@@ -35,13 +35,13 @@ func (p Package) WithFields() *log.Entry {
 	})
 }
 
-type pkg struct {
+type Pkg struct {
 	Package `json:",inline" yaml:",inline"`
 	Fetcher `json:"-" yaml:"-"`
 }
 
-func copyPkg(p pkg) pkg {
-	return pkg{
+func copyPkg(p Pkg) Pkg {
+	return Pkg{
 		Package: Package{
 			Type:        p.Type,
 			Name:        p.Name,
@@ -54,8 +54,8 @@ func copyPkg(p pkg) pkg {
 	}
 }
 
-func (p *pkg) UnmarshalYAML(unmarshal func(interface{}) error) error {
-	type P pkg
+func (p *Pkg) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	type P Pkg
 	out := P{}
 	err := unmarshal(&out)
 
@@ -65,7 +65,7 @@ func (p *pkg) UnmarshalYAML(unmarshal func(interface{}) error) error {
 
 	for k, v := range Registry {
 		if out.Type == k {
-			c := copyPkg(pkg(out))
+			c := copyPkg(Pkg(out))
 			c.Fetcher = v
 			*p = c
 			return err

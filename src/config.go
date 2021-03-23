@@ -6,7 +6,7 @@ import (
 )
 
 type Config struct {
-	Packages []*pkg `json:"packages" yaml:"packages"`
+	Packages []*Pkg `json:"packages" yaml:"packages"`
 }
 
 func NewConfig(r io.Reader) (*Config, error) {
